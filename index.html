@@ -12,136 +12,116 @@
     }
 
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #111827;
-      color: #ffffff;
-      overflow: hidden;
-    }
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111827;
+  color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
-    .screen {
-      width: 100vw;
-      height: 100vh;
-      padding: 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
+.screen {
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(16px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vw, 32px);
+}
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 4px solid rgba(255,255,255,0.15);
-      padding-bottom: 24px;
-    }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 4px solid rgba(255,255,255,0.15);
+  padding-bottom: clamp(16px, 3vw, 24px);
+}
 
-    .title {
-      font-size: 64px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+.title {
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
 
-    .now {
-      text-align: right;
-      font-size: 28px;
-      color: #d1d5db;
-      line-height: 1.35;
-    }
+.now {
+  text-align: right;
+  font-size: clamp(16px, 2.5vw, 28px);
+  color: #d1d5db;
+  line-height: 1.35;
+}
 
-    .days {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-      min-height: 0;
-    }
+.days {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 3vw, 28px);
+  min-height: 0;
+}
 
-    .day-card {
-      background: #1f2937;
-      border-radius: 28px;
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
-    }
+.day-card {
+  background: #1f2937;
+  border-radius: clamp(18px, 3vw, 28px);
+  padding: clamp(18px, 3vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 22px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+}
 
-    .day-card.today {
-      background: #243145;
-      border: 3px solid #38bdf8;
-    }
+.day-label {
+  font-size: clamp(16px, 2vw, 24px);
+}
 
-    .day-label {
-      font-size: 24px;
-      color: #38bdf8;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+.date {
+  font-size: clamp(24px, 3.5vw, 36px);
+}
 
-    .date {
-      font-size: 36px;
-      font-weight: 900;
-      margin-top: -10px;
-    }
+.shift {
+  padding: clamp(16px, 2.5vw, 22px);
+}
 
-    .shift {
-      background: rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 22px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+.shift-time {
+  font-size: clamp(18px, 2.5vw, 25px);
+}
 
-    .shift-time {
-      font-size: 25px;
-      font-weight: 900;
-      color: #fbbf24;
-      margin-bottom: 10px;
-    }
+.shift-name {
+  font-size: clamp(24px, 4vw, 34px);
+}
 
-    .shift-name {
-      font-size: 34px;
-      font-weight: 800;
-      line-height: 1.2;
-      word-break: break-word;
-    }
+.note {
+  font-size: clamp(16px, 2.3vw, 22px);
+}
+    @media (max-width: 1100px) {
+  .days {
+    grid-template-columns: 1fr;
+  }
 
-    .empty {
-      color: #9ca3af;
-      font-style: italic;
-      font-weight: 500;
-    }
+  .day-card {
+    min-height: auto;
+  }
+}
 
-    .note {
-      margin-top: auto;
-      color: #e5e7eb;
-      background: rgba(251,191,36,0.15);
-      border-left: 5px solid #fbbf24;
-      padding: 14px 18px;
-      border-radius: 12px;
-      font-size: 22px;
-      line-height: 1.3;
-    }
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .error {
-      font-size: 36px;
-      color: #fecaca;
-      background: #7f1d1d;
-      padding: 32px;
-      border-radius: 24px;
-    }
+  .now {
+    text-align: left;
+  }
 
-    .loading {
-      font-size: 48px;
-      color: #d1d5db;
-      margin-top: 80px;
-    }
+  .screen {
+    padding: 16px;
+  }
+
+  .days {
+    gap: 16px;
+  }
+}
   </style>
 </head>
 
