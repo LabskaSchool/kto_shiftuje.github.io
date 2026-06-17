@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Kto shiftuje</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111827;
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .screen {
+      width: 100vw;
+      height: 100vh;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 4px solid rgba(255,255,255,0.15);
+      padding-bottom: 24px;
+    }
+
+    .title {
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .now {
+      text-align: right;
+      font-size: 28px;
+      color: #d1d5db;
+      line-height: 1.35;
+    }
+
+    .days {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      min-height: 0;
+    }
+
+    .day-card {
+      background: #1f2937;
+      border-radius: 28px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    }
+
+    .day-card.today {
+      background: #243145;
+      border: 3px solid #38bdf8;
+    }
+
+    .day-label {
+      font-size: 24px;
+      color: #38bdf8;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .date {
+      font-size: 36px;
+      font-weight: 900;
+      margin-top: -10px;
+    }
+
+    .shift {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .shift-time {
+      font-size: 25px;
+      font-weight: 900;
+      color: #fbbf24;
+      margin-bottom: 10px;
+    }
+
+    .shift-name {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .empty {
+      color: #9ca3af;
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .note {
+      margin-top: auto;
+      color: #e5e7eb;
+      background: rgba(251,191,36,0.15);
+      border-left: 5px solid #fbbf24;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .error {
+      font-size: 36px;
+      color: #fecaca;
+      background: #7f1d1d;
+      padding: 32px;
+      border-radius: 24px;
+    }
+
+    .loading {
+      font-size: 48px;
+      color: #d1d5db;
+      margin-top: 80px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="screen">
+    <div class="header">
+      <div>
+        <div class="title">Kto shiftuje</div>
+      </div>
+      <div class="now" id="now"></div>
+    </div>
+
+    <div id="content" class="loading">Načítavam smeny...</div>
+  </div>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH5bgHQ9z9QxM6rhwaoU0UJN3FCyAZpwDhNBeCg9X27egLxq5M_e3fo70betrB3fdMfmvMfi9LIEpr/pub?gid=0&single=true&output=csv";
+
+    const SHIFTY = [
+      { key: "ranna", label: "Ranka", time: "06:00 – 14:00" },
+      { key: "obedna", label: "Obedka", time: "14:00 – 22:00" },
+      { key: "nocna", label: "Nočná", time: "22:00 – 06:00" }
+    ];
+
+    function pad(n) {
+      return String(n).padStart(2, "0");
+    }
+
+    function dateKey(date) {
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString("sk-SK", {
+        weekday: "long",
+        day: "2-digit",
+        month: "2-digit"
+      });
+    }
+
+    function getDayLabel(index) {
+      if (index === 0) return "Dnes";
+      if (index === 1) return "Zajtra";
+      return "Pozajtra";
+    }
+
+    function updateClock() {
+      const now = new Date();
+
+      document.getElementById("now").innerHTML = `
+        ${now.toLocaleDateString("sk-SK", {
+          weekday: "long",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric"
+        })}<br>
+        ${now.toLocaleTimeString("sk-SK", {
+          hour: "2-digit",
+          minute: "2-digit"
+        })}
+      `;
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let currentRow = [];
+      let currentValue = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"' && insideQuotes && nextChar === '"') {
+          currentValue += '"';
+          i++;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === "," && !insideQuotes) {
+          currentRow.push(currentValue.trim());
+          currentValue = "";
+        } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+          if (currentValue || currentRow.length) {
+            currentRow.push(currentValue.trim());
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentValue = "";
+
+          if (char === "\r" && nextChar === "\n") {
+            i++;
+          }
+        } else {
+          currentValue += char;
+        }
+      }
+
+      if (currentValue || currentRow.length) {
+        currentRow.push(currentValue.trim());
+        rows.push(currentRow);
+      }
+
+      const headers = rows.shift().map(h => h.trim().toLowerCase());
+
+      return rows.map(row => {
+        const obj = {};
+        headers.forEach((header, index) => {
+          obj[header] = row[index] || "";
+        });
+        return obj;
+      });
+    }
+
+    async function loadShifts() {
+      try {
+        if (!CSV_URL || CSV_URL.includes("SEM_DAJ")) {
+          throw new Error("Nie je nastavený Google Sheets CSV link.");
+        }
+
+        const response = await fetch(CSV_URL + "&cacheBust=" + Date.now());
+
+        if (!response.ok) {
+          throw new Error("Nepodarilo sa načítať Google Sheets.");
+        }
+
+        const csvText = await response.text();
+        const data = parseCSV(csvText);
+
+        const today = new Date();
+        const daysToShow = [];
+
+        for (let i = 0; i < 3; i++) {
+          const d = new Date(today);
+          d.setDate(today.getDate() + i);
+          daysToShow.push(d);
+        }
+
+        const html = `
+          <div class="days">
+            ${daysToShow.map((date, index) => {
+              const key = dateKey(date);
+              const row = data.find(item => item.datum === key) || {};
+
+              return `
+                <div class="day-card ${index === 0 ? "today" : ""}">
+                  <div class="day-label">${getDayLabel(index)}</div>
+                  <div class="date">${formatDate(date)}</div>
+
+                  ${SHIFTY.map(shift => {
+                    const value = row[shift.key] || "";
+
+                    return `
+                      <div class="shift">
+                        <div class="shift-time">${shift.time}</div>
+                        <div class="shift-name ${value ? "" : "empty"}">
+                          ${value || "Neobsadené"}
+                        </div>
+                      </div>
+                    `;
+                  }).join("")}
+
+                  ${row.poznamka ? `<div class="note">${row.poznamka}</div>` : ""}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+
+        document.getElementById("content").className = "";
+        document.getElementById("content").innerHTML = html;
+
+      } catch (error) {
+        document.getElementById("content").className = "error";
+        document.getElementById("content").innerHTML = `
+          Chyba: ${error.message}
+        `;
+      }
+    }
+
+    updateClock();
+    loadShifts();
+
+    setInterval(updateClock, 1000);
+
+    // Obnoví dáta z Google Sheets každých 5 minút.
+    setInterval(loadShifts, 5 * 60 * 1000);
+  </script>
+</body>
+</html>
