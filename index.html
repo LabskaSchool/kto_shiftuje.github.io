@@ -7,214 +7,227 @@
   <title>Kto shiftuje</title>
 
   <style>
-   * {
-  box-sizing: border-box;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-html, body {
-  margin: 0;
-  min-height: 100%;
-}
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
 
-body {
-  min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #111827;
-  color: #ffffff;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111827;
+      color: #ffffff;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
 
-.screen {
-  width: 100vw;
-  min-height: 100vh;
-  padding: 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
+    .screen {
+      width: 100%;
+      min-height: 100vh;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 4px solid rgba(255,255,255,0.15);
-  padding-bottom: 24px;
-}
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 4px solid rgba(255,255,255,0.15);
+      padding-bottom: 24px;
+    }
 
-.title {
-  font-size: 64px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
+    .title {
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
 
-.now {
-  text-align: right;
-  font-size: 28px;
-  color: #d1d5db;
-  line-height: 1.35;
-}
+    .now {
+      text-align: right;
+      font-size: 28px;
+      color: #d1d5db;
+      line-height: 1.35;
+    }
 
-.days {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-}
+    .days {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
 
-.day-card {
-  background: #1f2937;
-  border-radius: 28px;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
-}
+    .day-card {
+      background: #1f2937;
+      border-radius: 28px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    }
 
-.day-card.today {
-  background: #243145;
-  border: 3px solid #38bdf8;
-}
+    .day-card.today {
+      background: #243145;
+      border: 3px solid #38bdf8;
+    }
 
-.day-label {
-  font-size: 24px;
-  color: #38bdf8;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+    .day-label {
+      font-size: 24px;
+      color: #38bdf8;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-.date {
-  font-size: 36px;
-  font-weight: 900;
-  margin-top: -10px;
-}
+    .date {
+      font-size: 36px;
+      font-weight: 900;
+      margin-top: -10px;
+    }
 
-.shift {
-  background: rgba(255,255,255,0.08);
-  border-radius: 20px;
-  padding: 22px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+    .shift {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-.shift-time {
-  font-size: 25px;
-  font-weight: 900;
-  color: #fbbf24;
-  margin-bottom: 10px;
-}
+    .shift-time {
+      font-size: 25px;
+      font-weight: 900;
+      color: #fbbf24;
+      margin-bottom: 10px;
+    }
 
-.shift-name {
-  font-size: 34px;
-  font-weight: 800;
-  line-height: 1.2;
-  word-break: break-word;
-}
+    .shift-name {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.2;
+      word-break: break-word;
+    }
 
-.empty {
-  color: #9ca3af;
-  font-style: italic;
-  font-weight: 500;
-}
+    .empty {
+      color: #9ca3af;
+      font-style: italic;
+      font-weight: 500;
+    }
 
-.note {
-  margin-top: auto;
-  color: #e5e7eb;
-  background: rgba(251,191,36,0.15);
-  border-left: 5px solid #fbbf24;
-  padding: 14px 18px;
-  border-radius: 12px;
-  font-size: 22px;
-  line-height: 1.3;
-}
+    .note {
+      margin-top: auto;
+      color: #e5e7eb;
+      background: rgba(251,191,36,0.15);
+      border-left: 5px solid #fbbf24;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 22px;
+      line-height: 1.3;
+    }
 
-.error {
-  font-size: 36px;
-  color: #fecaca;
-  background: #7f1d1d;
-  padding: 32px;
-  border-radius: 24px;
-}
+    .error {
+      font-size: 36px;
+      color: #fecaca;
+      background: #7f1d1d;
+      padding: 32px;
+      border-radius: 24px;
+    }
 
-.loading {
-  font-size: 48px;
-  color: #d1d5db;
-  margin-top: 80px;
-}
+    .loading {
+      font-size: 48px;
+      color: #d1d5db;
+      margin-top: 80px;
+    }
 
-@media (max-width: 900px) {
-  .screen {
-    width: 100%;
-    padding: 16px;
-    gap: 16px;
-  }
+    @media (max-width: 900px) {
+      .screen {
+        padding: 16px;
+        gap: 16px;
+      }
 
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
 
-  .title {
-    font-size: 42px;
-  }
+      .title {
+        font-size: 42px;
+      }
 
-  .now {
-    text-align: left;
-    font-size: 18px;
-  }
+      .now {
+        text-align: left;
+        font-size: 18px;
+      }
 
-  .days {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
+      .days {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
 
-  .day-card {
-    padding: 18px;
-    border-radius: 18px;
-    gap: 16px;
-  }
+      .day-card {
+        padding: 18px;
+        border-radius: 18px;
+        gap: 16px;
+      }
 
-  .day-label {
-    font-size: 18px;
-  }
+      .day-label {
+        font-size: 18px;
+      }
 
-  .date {
-    font-size: 26px;
-  }
+      .date {
+        font-size: 26px;
+      }
 
-  .shift {
-    padding: 16px;
-    border-radius: 16px;
-  }
+      .shift {
+        padding: 16px;
+        border-radius: 16px;
+      }
 
-  .shift-time {
-    font-size: 18px;
-  }
+      .shift-time {
+        font-size: 18px;
+      }
 
-  .shift-name {
-    font-size: 24px;
-  }
+      .shift-name {
+        font-size: 24px;
+      }
 
-  .note {
-    font-size: 16px;
-  }
+      .note {
+        font-size: 16px;
+      }
 
-  .loading {
-    font-size: 28px;
-  }
+      .loading {
+        font-size: 28px;
+      }
 
-  .error {
-    font-size: 22px;
-    padding: 20px;
-  }
-}
- </style>
+      .error {
+        font-size: 22px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="screen">
+    <div class="header">
+      <div>
+        <div class="title">Kto shiftuje</div>
+      </div>
+      <div class="now" id="now"></div>
+    </div>
+
+    <div id="content" class="loading">Načítavam smeny...</div>
+  </div>
+
   <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTH5bgHQ9z9QxM6rhwaoU0UJN3FCyAZpwDhNBeCg9X27egLxq5M_e3fo70betrB3fdMfmvMfi9LIEpr/pub?gid=0&single=true&output=csv";
 
@@ -315,10 +328,6 @@ body {
 
     async function loadShifts() {
       try {
-        if (!CSV_URL || CSV_URL.includes("SEM_DAJ")) {
-          throw new Error("Nie je nastavený Google Sheets CSV link.");
-        }
-
         const response = await fetch(CSV_URL + "&cacheBust=" + Date.now());
 
         if (!response.ok) {
@@ -373,9 +382,7 @@ body {
 
       } catch (error) {
         document.getElementById("content").className = "error";
-        document.getElementById("content").innerHTML = `
-          Chyba: ${error.message}
-        `;
+        document.getElementById("content").innerHTML = `Chyba: ${error.message}`;
       }
     }
 
@@ -383,8 +390,6 @@ body {
     loadShifts();
 
     setInterval(updateClock, 1000);
-
-    // Obnoví dáta z Google Sheets každých 5 minút.
     setInterval(loadShifts, 5 * 60 * 1000);
   </script>
 </body>
