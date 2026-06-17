@@ -22,25 +22,16 @@
 }
 
 .screen {
-  width: 100%;
+  width: 100vw;
   min-height: 100vh;
-  padding: clamp(16px, 4vw, 48px);
+  padding: 48px;
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 3vw, 32px);
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  border-bottom: 4px solid rgba(255,255,255,0.15);
-  padding-bottom: clamp(16px, 3vw, 24px);
+  gap: 32px;
 }
 
 .title {
-  font-size: clamp(32px, 6vw, 64px);
+  font-size: 64px;
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -48,7 +39,7 @@
 
 .now {
   text-align: right;
-  font-size: clamp(16px, 2.5vw, 28px);
+  font-size: 28px;
   color: #d1d5db;
   line-height: 1.35;
 }
@@ -57,69 +48,89 @@
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(16px, 3vw, 28px);
-  min-height: 0;
+  gap: 28px;
 }
 
 .day-card {
   background: #1f2937;
-  border-radius: clamp(18px, 3vw, 28px);
-  padding: clamp(18px, 3vw, 28px);
+  border-radius: 28px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2vw, 22px);
+  gap: 22px;
   box-shadow: 0 16px 40px rgba(0,0,0,0.25);
 }
 
 .day-label {
-  font-size: clamp(16px, 2vw, 24px);
+  font-size: 24px;
 }
 
 .date {
-  font-size: clamp(24px, 3.5vw, 36px);
+  font-size: 36px;
 }
 
 .shift {
-  padding: clamp(16px, 2.5vw, 22px);
+  padding: 22px;
 }
 
 .shift-time {
-  font-size: clamp(18px, 2.5vw, 25px);
+  font-size: 25px;
 }
 
 .shift-name {
-  font-size: clamp(24px, 4vw, 34px);
+  font-size: 34px;
 }
 
 .note {
-  font-size: clamp(16px, 2.3vw, 22px);
+  font-size: 22px;
 }
-    @media (max-width: 1100px) {
-  .days {
-    grid-template-columns: 1fr;
+    @media (max-width: 900px) {
+
+  .screen {
+    width: 100%;
+    padding: 16px;
+    gap: 16px;
   }
 
-  .day-card {
-    min-height: auto;
-  }
-}
-
-@media (max-width: 600px) {
   .header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 42px;
   }
 
   .now {
     text-align: left;
-  }
-
-  .screen {
-    padding: 16px;
+    font-size: 18px;
   }
 
   .days {
+    grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .day-card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .date {
+    font-size: 26px;
+  }
+
+  .shift-time {
+    font-size: 18px;
+  }
+
+  .shift-name {
+    font-size: 24px;
+  }
+
+  .note {
+    font-size: 16px;
   }
 }
   </style>
